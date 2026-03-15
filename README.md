@@ -138,6 +138,16 @@
 
 ### 100k规模 - 基线 | 编辑器 FPS：4 | 构建后 FPS：10
 
+100k规模下构建后10FPS，已经接近传统Mono架构下的性能极限。
+
+
+
+后续迭代将往现代技术栈推进：
+
+* GPU Instancing + Compute Buffer + DrawMeshInstancedIndirect
+* Entities + Hybrid Renderer（保留部分 GO 用于 UI/特效）
+* Entities Graphics + GPU Resident Drawer（未来方向）
+
 
 
 ![image-20260315214920139](./Files/Image/README/image-20260315214920139.png)
@@ -150,3 +160,20 @@
 
 <center>构建后FPS：10</center>
 
+
+
+### 100k规模 - 1 | 编辑器 FPS：5 | 构建后 FPS： 12
+
+GPU Instancing + Compute Buffer + DrawMeshInstancedIndirect
+
+
+
+关闭全局灯渲染后节省13ms时间。
+
+Main Light -> Shadow Type -> None
+
+
+
+<img src="./Files/Image/README/image-20260316031222449.png" alt="image-20260316031222449" style="zoom:50%;" />
+
+<center>构建后FPS：~13</center>
