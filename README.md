@@ -26,8 +26,6 @@
 
 ### 10k规模 - 2 | FPS：25 (Editor)
 
-
-
 **针对 3 FPS 的现状，执行以下步骤：**
 
 1. 开启 Dynamic Batching：但在 Built-in 渲染管线下没有帮助。
@@ -44,8 +42,6 @@
 
 
 
-### 
-
 | 行为                        | 记录                                                         | 截图                                                         |
 | --------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | 批量创建GameObject          | 间隔：100ms<br />数量：100/次<br />总数：10k                 | <img src="./Files/Image/README/profile-10k-1.png" alt="image-20260315174312028" style="zoom:50%;" /> |
@@ -53,3 +49,51 @@
 | 预制件：Enemy01-NoRigidbody | Capsule<br />1. 移除Rigidbody<br />2. 使用自定义Material<br />3. 开启GPU Instancing | <img src="./Files/Image/README/image-20260315174656347.png" alt="image-20260315174656347" style="zoom:50%;" /><br /><img src="./Files/Image/README/image-20260315193409263.png" alt="image-20260315193409263" style="zoom:50%;" /> |
 | 结果                        | FPS：25                                                      | ![image-20260315193315389](./Files/Image/README/image-20260315193315389.png) |
 
+### 25k规模 - 1 | FPS：0 (Editor)
+
+在当前逻辑下，提升GO数量到25k规模后，FPS稳定在10帧（编辑器运行）。
+
+
+
+![image-20260315194233339](./Files/Image/README/image-20260315194233339.png)
+
+<center>当前性能基线</center>
+
+
+
+**进行性能分析，得到以下主要信息：**
+
+1. 基础：PlayerLoop -> 占用 60ms 总计算时间。
+2. Camera.Render -> 26ms | 渲染耗时。
+3. Update.ScriptRunBehaviourUpdate -> 15ms | MonoBehaviour脚本耗时（Update），共计调用 25000 次/帧。
+4. FixedUpdate.PhysicsFixedUpdate -> 15ms | 物理系统同步Collider和Transform操作耗时。
+
+
+
+<img src="./Files/Image/README/image-20260315194459355.png" alt="image-20260315194459355" style="zoom:50%;" />
+
+
+
+**本轮优化着重以下2点：**
+
+1. 降低25k对象情况下Update（移动逻辑）运行压力。
+2. 降低渲染压力。
+
+
+
+**渲染压力分析：**
+
+
+
+**Update（移动逻辑）运行压力分析：**
+
+1. 携带Collider的GameObject在每一次transform发生位移时，会触发PhysX的同步（FixedUpdate.PhysicsFixedUpdate）。
+
+2. 调用每一个MonoBehaviour时的逻辑链开销。
+
+
+
+**步骤：**
+
+1. 移除Collider：避开PhysX同步开销，提升FPS 10 -> ~16 。
+2. 
