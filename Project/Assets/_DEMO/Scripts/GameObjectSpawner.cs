@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameObjectSpawner : MonoBehaviour, IGameObjectSpawner
 {
     [SerializeField] private GameObjectSpawnPrefabProvider _spawnPrefabProvider;
     [SerializeField] private int _wantSpawnCount = 10000;
+    [SerializeField] private int _alreadySpawnCount = 0;
 
     private void Start()
     {
@@ -19,9 +19,9 @@ public class GameObjectSpawner : MonoBehaviour, IGameObjectSpawner
         {
             SpawnSingle();
 
-            if (i == 1000)
+            if (i == 50)
             {
-                yield return new WaitForNextFrameUnit();
+                yield return new WaitForSeconds(0.2f);
             }
         }
     }
@@ -29,7 +29,9 @@ public class GameObjectSpawner : MonoBehaviour, IGameObjectSpawner
     public GameObject SpawnSingle()
     {
         GameObject prefab = _spawnPrefabProvider.GetSpawnPrefab();
-        return Instantiate(prefab);
+        GameObject instance = Instantiate(prefab);
+        _alreadySpawnCount++;
+        return instance;
     }
 
     public GameObject[] SpawnMultiple(int spawnCount)
