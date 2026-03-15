@@ -152,7 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spawnPrefabProvider: {fileID: 1207070887}
-  _wantSpawnCount: 1000
+  _wantSpawnCount: 10000
+  _batchSpawnUnit: 100
+  _batchSpawnInterval: 0.1
   _alreadySpawnCount: 0
 --- !u!4 &484419126
 Transform:

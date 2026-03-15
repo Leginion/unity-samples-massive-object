@@ -5,6 +5,8 @@ public class GameObjectSpawner : MonoBehaviour, IGameObjectSpawner
 {
     [SerializeField] private GameObjectSpawnPrefabProvider _spawnPrefabProvider;
     [SerializeField] private int _wantSpawnCount = 10000;
+    [SerializeField] private int _batchSpawnUnit = 50;
+    [SerializeField] private float _batchSpawnInterval = 0.2f;
     [SerializeField] private int _alreadySpawnCount = 0;
 
     private void Start()
@@ -19,7 +21,7 @@ public class GameObjectSpawner : MonoBehaviour, IGameObjectSpawner
         {
             SpawnSingle();
 
-            if (i == 50)
+            if (i % _batchSpawnUnit == 0)
             {
                 yield return new WaitForSeconds(0.2f);
             }
