@@ -133,3 +133,20 @@
 ![image-20260315211903850](./Files/Image/README/image-20260315211903850.png)
 
 <center>优化后帧率在编辑器内FPS稳定到 ~20 帧</center>
+
+
+
+### 100k规模 - 基线 | 编辑器 FPS：4 | 构建后 FPS：10
+
+
+
+![image-20260315214920139](./Files/Image/README/image-20260315214920139.png)
+
+<center>编辑器FPS：4</center>
+
+
+
+<img src="./Files/Image/README/image-20260315214844589.png" alt="image-20260315214844589" style="zoom:50%;" />
+
+<center>构建后FPS：10</center>
+
