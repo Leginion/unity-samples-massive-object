@@ -30,9 +30,9 @@
 
 1. 开启 Dynamic Batching：但在 Built-in 渲染管线下没有帮助。
 
-2. 开启 GPU Instancing：将 Batches > 10000 降低到 Batches < 100 ，但对FPS没有明显帮助。
+2. 开启 GPU Instancing：将 Batches > 10000 降低到 Batches < 100 ，但当前情况下FPS没有明显提升。
 3. 分析 Profiler：确认瓶颈来源是物理系统（Rigidbody）。
-4. **★ 移除 Enemy Prefab 上的 Rigidbody：平均FPS提升到 25 。**
+4. **★ 移除 Enemy Prefab 上的 Rigidbody：平均FPS提升到 25 （避开PhysX transform -> collider 反向同步）。**
 
 
 
@@ -86,8 +86,9 @@
 
 1. 携带Collider的GameObject在每一次transform发生位移时，会触发PhysX的同步（FixedUpdate.PhysicsFixedUpdate）。
 
-2. 调用每一个MonoBehaviour时的逻辑链开销。
+2. 调用每一个MonoBehaviour时的逻辑链开销和Unity管理MonoBehaviour开销。
 
+3. 直接设置transform.position速度高于transform.Translate。
 
 
 
@@ -99,15 +100,15 @@
 
 
 
-**步骤 - 1：优化物理开销、移动开销、Mono开销**
+**步骤 - 1：优化物理开销、移动开销、Mono开销 | FPS变化：10 -> 13**
 
-1. 移除Collider：避开PhysX同步开销，提升FPS 10 -> ~16 。
+1. 移除Collider：避开PhysX同步开销，提升FPS 10 -> ~12。
    ![image-20260315203106314](./Files/Image/README/image-20260315203106314.png)
-2. 集中管理移动逻辑：对Enemy去Mono化，降低 BehaviourUpdate 开销，~15ms -> ~7ms 。
+2. 集中管理移动逻辑：对Enemy去Mono化，降低 BehaviourUpdate 开销，~15ms -> ~7ms ，提升FPS ~12 -> ~13
    ![image-20260315203232046](./Files/Image/README/image-20260315203232046.png)
    1. 引入 EnemyManager 管理所有对象实例，移除MonoBehaviour。
    2. 通过 EnemyManager 直接移动所有Transform。（至此 ~11ms）
-   3. 使用直接设置坐标 `transform.localPosition += movement` 替代 `transform.Translate` ，略微加速。（至此 ~7ms）
+   3. 使用直接设置坐标 `transform.localPosition += movement` 替代 `transform.Translate` ，加速。（至此 ~7ms）
 
 
 
