@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class GameObjectSpawner : MonoBehaviour, IGameObjectSpawner
@@ -32,10 +33,12 @@ public class GameObjectSpawner : MonoBehaviour, IGameObjectSpawner
     {
         GameObject prefab = _spawnPrefabProvider.GetSpawnPrefab();
         GameObject instance = Instantiate(prefab);
+        EnemyManager.Add(instance.transform);
         _alreadySpawnCount++;
         return instance;
     }
 
+    [Obsolete("测试场景下使用 SpawnSingle 已足够")]
     public GameObject[] SpawnMultiple(int spawnCount)
     {
         GameObject[] newObjects = new GameObject[spawnCount];
