@@ -49,9 +49,11 @@
 | 预制件：Enemy01-NoRigidbody | Capsule<br />1. 移除Rigidbody<br />2. 使用自定义Material<br />3. 开启GPU Instancing | <img src="./Files/Image/README/image-20260315174656347.png" alt="image-20260315174656347" style="zoom:50%;" /><br /><img src="./Files/Image/README/image-20260315193409263.png" alt="image-20260315193409263" style="zoom:50%;" /> |
 | 结果                        | FPS：25                                                      | ![image-20260315193315389](./Files/Image/README/image-20260315193315389.png) |
 
-### 25k规模 - 1 | FPS：0 (Editor)
+### 25k规模 - 1 | 编辑器 FPS：20 | 构建后 FPS：50
 
 在当前逻辑下，提升GO数量到25k规模后，FPS稳定在10帧（编辑器运行）。
+
+本轮优化完成后，编辑器内FPS稳定在 ~20 帧，构建后FPS稳定在 ~50 帧。
 
 
 
@@ -81,7 +83,6 @@
 
 
 
-
 **Update（移动逻辑）运行压力分析：**
 
 1. 携带Collider的GameObject在每一次transform发生位移时，会触发PhysX的同步（FixedUpdate.PhysicsFixedUpdate）。
@@ -94,9 +95,7 @@
 
 **渲染压力分析：**
 
-
-
-
+1. Mesh Renderer 阴影计算耗时（Render.OpaqueGeometry）。
 
 
 
@@ -116,3 +115,21 @@
 
 <center>优化后帧率稳定到 ~13 帧</center>
 
+
+
+**步骤 - 2：优化渲染开销**
+
+1. 移除 Mesh Renderer 阴影渲染：降低 Render.OpaqueGeometry 开销 ~17ms -> ~5ms ，FPS变化 ~13 -> ~19 （编辑器内）。
+   ![image-20260315211448328](./Files/Image/README/image-20260315211448328.png)
+
+
+
+<img src="./Files/Image/README/image-20260315211731588.png" alt="image-20260315211731588" style="zoom:50%;" />
+
+<center>优化后帧率在构建后FPS稳定到 ~50 帧</center>
+
+
+
+![image-20260315211903850](./Files/Image/README/image-20260315211903850.png)
+
+<center>优化后帧率在编辑器内FPS稳定到 ~20 帧</center>
