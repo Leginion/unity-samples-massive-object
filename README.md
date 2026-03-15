@@ -70,7 +70,7 @@
 
 
 
-<img src="./Files/Image/README/image-20260315194459355.png" alt="image-20260315194459355" style="zoom:50%;" />
+<img src="./Files/Image/README/image-20260315194459355.png" alt="image-20260315194459355" style="zoom:75%;" />
 
 
 
@@ -79,9 +79,6 @@
 1. 降低25k对象情况下Update（移动逻辑）运行压力。
 2. 降低渲染压力。
 
-
-
-**渲染压力分析：**
 
 
 
@@ -93,7 +90,28 @@
 
 
 
-**步骤：**
+
+**渲染压力分析：**
+
+
+
+
+
+
+
+**步骤 - 1：优化物理开销、移动开销、Mono开销**
 
 1. 移除Collider：避开PhysX同步开销，提升FPS 10 -> ~16 。
-2. 
+   ![image-20260315203106314](./Files/Image/README/image-20260315203106314.png)
+2. 集中管理移动逻辑：对Enemy去Mono化，降低 BehaviourUpdate 开销，~15ms -> ~7ms 。
+   ![image-20260315203232046](./Files/Image/README/image-20260315203232046.png)
+   1. 引入 EnemyManager 管理所有对象实例，移除MonoBehaviour。
+   2. 通过 EnemyManager 直接移动所有Transform。（至此 ~11ms）
+   3. 使用直接设置坐标 `transform.localPosition += movement` 替代 `transform.Translate` ，略微加速。（至此 ~7ms）
+
+
+
+![image-20260315203808496](./Files/Image/README/image-20260315203808496.png)
+
+<center>优化后帧率稳定到 ~13 帧</center>
+
