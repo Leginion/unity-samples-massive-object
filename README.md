@@ -24,3 +24,32 @@
 | 预制件：Enemy01    | Capsule / Rigidbody                          | <img src="./Files/Image/README/image-20260315174656347.png" alt="image-20260315174656347" style="zoom:50%;" /><br /><img src="./Files/Image/README/profile-10k-2.png" alt="image-20260315174517298" style="zoom:50%;" /> |
 | 结果               | FPS：3                                       | ![](./Files/Image/README/image-20260315174959942.png)        |
 
+### 10k规模 - 2 | FPS：25 (Editor)
+
+
+
+**针对 3 FPS 的现状，执行以下步骤：**
+
+1. 开启 Dynamic Batching：但在 Built-in 渲染管线下没有帮助。
+
+2. 开启 GPU Instancing：将 Batches > 10000 降低到 Batches < 100 ，但对FPS没有明显帮助。
+3. 分析 Profiler：确认瓶颈来源是物理系统（Rigidbody）。
+4. **★ 移除 Enemy Prefab 上的 Rigidbody：平均FPS提升到 25 。**
+
+
+
+<img src="./Files/Image/README/image-20260315184321667.png" alt="image-20260315184321667" style="zoom:50%;" />
+
+<center>Profiler - 性能瓶颈为Rigidbody</center>
+
+
+
+### 
+
+| 行为                        | 记录                                                         | 截图                                                         |
+| --------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| 批量创建GameObject          | 间隔：100ms<br />数量：100/次<br />总数：10k                 | <img src="./Files/Image/README/profile-10k-1.png" alt="image-20260315174312028" style="zoom:50%;" /> |
+| 行为：每帧移动              | transform.Translate / Update                                 | <img src="./Files/Image/README/image-20260315174800770.png" alt="image-20260315174800770" style="zoom:50%;" /> |
+| 预制件：Enemy01-NoRigidbody | Capsule<br />1. 移除Rigidbody<br />2. 使用自定义Material<br />3. 开启GPU Instancing | <img src="./Files/Image/README/image-20260315174656347.png" alt="image-20260315174656347" style="zoom:50%;" /><br /><img src="./Files/Image/README/image-20260315193409263.png" alt="image-20260315193409263" style="zoom:50%;" /> |
+| 结果                        | FPS：25                                                      | ![image-20260315193315389](./Files/Image/README/image-20260315193315389.png) |
+
