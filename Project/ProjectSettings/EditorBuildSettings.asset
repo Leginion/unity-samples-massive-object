@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_DEMO/Scenes/DynamicGO_X_100k_1_NoDepthNoLightShadow.unity
-    guid: 27b1caa71554d8647b4ec4b12c463c8a
+    path: Assets/_DEMO/Scenes/DynamicGO_X_1000k_0_Baseline.unity
+    guid: 6f01fbda7e1577f489dabc57df62de3f
   m_configObjects: {}
