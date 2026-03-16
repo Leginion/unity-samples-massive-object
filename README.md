@@ -162,18 +162,50 @@
 
 
 
-### 100k规模 - 1 | 编辑器 FPS：5 | 构建后 FPS： 12
-
-GPU Instancing + Compute Buffer + DrawMeshInstancedIndirect
+### 100k规模 - 1 | 编辑器 FPS：5 | 构建后 FPS： ~13
 
 
 
-关闭全局灯渲染后节省13ms时间。
+**对镜头关闭Depth检测 + 关闭全局灯渲染后节省22ms时间。**
 
 Main Light -> Shadow Type -> None
+
+
+
+<img src="./Files/Image/README/image-20260316031523822.png" alt="image-20260316031523822"  />
 
 
 
 <img src="./Files/Image/README/image-20260316031222449.png" alt="image-20260316031222449" style="zoom:50%;" />
 
 <center>构建后FPS：~13</center>
+
+
+
+### 100k规模 - 2 | 编辑器 FPS：~57 | 构建后 FPS：~83
+
+GPU Instancing + Compute Buffer + DrawMeshInstancedIndirect
+
+
+
+**使用 Custom Unlit 开启 GPU Instancing + 调用 GPU 渲染后，在100k规模得到大幅提升。**
+
+**原理：**CPU运算压力（100k规模的渲染请求）被大幅削减（只需要1次调用），充分利用GPU并行计算能力，实现快速渲染，充分释放主核CPU压力。
+
+
+
+<img src="./Files/Image/README/image-20260316175736210.png" alt="image-20260316175736210" style="zoom: 50%;" />
+
+
+
+![image-20260316175849880](./Files/Image/README/image-20260316175849880.png)
+
+
+
+### 1000k规模 - 基线 | 构建后 FPS：~10
+
+
+
+![image-20260316180110778](./Files/Image/README/image-20260316180110778.png)
+
+<center>构建后FPS：~10</center>
