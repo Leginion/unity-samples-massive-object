@@ -68,6 +68,7 @@ public class GPUInstancedRenderer : MonoBehaviour
         if (!instanceMaterial || !instanceMesh || matrixBuffer == null) return;
 
         // 绑定 Buffer 到 Shader
+        // 名字 "instanceMatrices" 必须和 Shader 中声明的 StructuredBuffer<4x4> 明确对应
         instanceMaterial.SetBuffer("instanceMatrices", matrixBuffer);
 
         // 执行 Indirect 绘制
