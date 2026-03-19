@@ -532,7 +532,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7869754653ef40aa930a2966f79e4b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hiZCompute: {fileID: 7200000, guid: 4d40f5e6855221049b017dd0710a49ee, type: 3}
+  depthCopyShader: {fileID: 4800000, guid: 584f7998d99b4fd4f9daf26761ad939b, type: 3}
+  maxDownsampleShader: {fileID: 4800000, guid: ae594631237ab234892c24a38aa03182, type: 3}
 --- !u!1 &1207070886
 GameObject:
   m_ObjectHideFlags: 0
